@@ -1,8 +1,5 @@
 package com.app.productos;
 
-//Importar de manera manual el assertNotNull
-
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.app.productos.entidades.Producto;
 import com.app.productos.repositorio.ProductoRepositorio;
@@ -12,6 +9,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull; //Importar de manera manual el assertNotNull
+import static org.assertj.core.api.Assertions.assertThat; //Importar de manera manual el assertThat
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -31,5 +30,14 @@ public class ProductoTest {
         assertNotNull(productoGuardado);
     }
 
+    @Test
+    public void testBuscarProductosPorNombre() {
+        String nombre = "Phone 15 Pro";
+        Producto producto = repositorio.findByNombre(nombre);
+
+        //Confirma
+        assertThat(producto.getNombre()).isEqualTo(nombre);
+
+    }
 
 }

@@ -9,6 +9,9 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 
+import java.util.List;
+
+import static org.assertj.core.api.InstanceOfAssertFactories.LIST;
 import static org.assertj.core.api.InstanceOfAssertFactories.LONG;
 import static org.junit.jupiter.api.Assertions.assertNotNull; //Importar de manera manual el assertNotNull
 import static org.assertj.core.api.Assertions.assertThat; //Importar de manera manual el assertThat
@@ -73,6 +76,18 @@ public class ProductoTest {
         //Confirmar que se guarde los datos
         assertThat(producto.getNombre()).isEqualTo(nombreProducto);
 
+    }
+
+    @Test
+    public void testListarProductos() {
+        List<Producto> productos = (List<Producto>) repositorio.findAll();
+
+        //Para imprimir
+        for (Producto producto : productos) {
+            System.out.println(producto);
+        }
+
+        assertThat(productos).size().isGreaterThan(0);
     }
 
 

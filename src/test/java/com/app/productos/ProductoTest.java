@@ -13,9 +13,9 @@ import java.util.List;
 
 import static org.assertj.core.api.InstanceOfAssertFactories.LIST;
 import static org.assertj.core.api.InstanceOfAssertFactories.LONG;
-import static org.junit.jupiter.api.Assertions.assertNotNull; //Importar de manera manual el assertNotNull
 import static org.assertj.core.api.Assertions.assertThat; //Importar de manera manual el assertThat
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -90,5 +90,17 @@ public class ProductoTest {
         assertThat(productos).size().isGreaterThan(0);
     }
 
+    @Test
+    @Rollback(value = false)
+    public void testEliminarProductos() {
+        Integer id = 3;
 
+        boolean existeAnteDeBorrar = repositorio.findById(id).isPresent();
+        repositorio.deleteById(id);
+        boolean noExisteDespuesDeBorrar = repositorio.findById(id).isPresent();
+
+        assertTrue(existeAnteDeBorrar);
+        assertFalse(noExisteDespuesDeBorrar);
+    }
+    
 }

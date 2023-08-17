@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 
+import static org.assertj.core.api.InstanceOfAssertFactories.LONG;
 import static org.junit.jupiter.api.Assertions.assertNotNull; //Importar de manera manual el assertNotNull
 import static org.assertj.core.api.Assertions.assertThat; //Importar de manera manual el assertThat
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -48,6 +49,30 @@ public class ProductoTest {
 
         //Confirma
         assertNull(producto); //Para buscar por nombre no existente
+    }
+
+    @Test
+    @Rollback(value = false) //Para que guarde y no haga rollback, ya que quiero insertar los datos en mi BD
+    public void testActualizarProducto() {
+
+        //Ingresamo los valores nuevo
+        String nombreProducto = "Lenovo 8va Generación";
+        float precioProducto = 23001;
+        Integer idProducto = 1;
+
+        //Por medio del constructor lo ingreso
+        Producto producto = new Producto(nombreProducto, precioProducto);
+        producto.setId(idProducto);
+
+        //Guardamos
+        repositorio.save(producto);
+
+        //Actualizamos
+        Producto productoActualizado = repositorio.findByNombre(nombreProducto);
+
+        //Confirmar que se guarde los datos
+        assertThat(producto.getNombre()).isEqualTo(nombreProducto);
+
     }
 
 

@@ -11,6 +11,7 @@ import org.springframework.test.annotation.Rollback;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull; //Importar de manera manual el assertNotNull
 import static org.assertj.core.api.Assertions.assertThat; //Importar de manera manual el assertThat
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -39,5 +40,15 @@ public class ProductoTest {
         assertThat(producto.getNombre()).isEqualTo(nombre);
 
     }
+
+    @Test
+    public void testBuscarProductosPorNombreNoExistente() {
+        String nombre = "Acatel 15 Pro";
+        Producto producto = repositorio.findByNombre(nombre);
+
+        //Confirma
+        assertNull(producto); //Para buscar por nombre no existente
+    }
+
 
 }
